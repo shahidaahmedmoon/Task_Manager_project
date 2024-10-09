@@ -8,6 +8,10 @@ import helmet from "helmet";
 
 import mongoose from "mongoose";
 
+import { DATABASE, MAX_JSON_SIZE, REQUEST_TIME, REQUEST_NUMBER, WEB_CACHE, URL_ENCODE} from "./app/config/config.js";
+
+import router from "./routes/Api.js";
+
 
 
 const app = express();
@@ -37,3 +41,17 @@ app.set('etag', WEB_CACHE);
 
 //Database Connect
 
+mongoose.connect (DATABASE, {autoIndex:true}).then(()=>{
+    console.log("MongoDB connected");
+}).catch(()=>{
+    console.log("MongoDB disconnected"); 
+})
+
+app.use ("/api",router);
+
+
+const PORT = process.env.PORT || 5050;
+
+app.listen (PORT, ()=>{
+ console.log ("server started on port" + PORT);
+})

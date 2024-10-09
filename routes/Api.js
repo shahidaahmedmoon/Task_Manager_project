@@ -3,6 +3,7 @@ const router = express.Router();
 
 import *as TasksController from "../app/controllers/TasksController.js";
 import *as UsersController from "../app/controllers/UsersController.js";
+import AuthMiddleware from "../app/middlewares/AuthMiddleware.js";
 
 
 
@@ -13,11 +14,11 @@ router.post ("/Registration", UsersController.Registration)
 
 router.post ("/Login", UsersController.Login)
 
-router.get ("/ProfileDetails", UsersController.ProfileDetails)
+router.get ("/ProfileDetails", AuthMiddleware,UsersController.ProfileDetails)
 
-router.post ("/ProfileUpdate" , UsersController.ProfileUpdate)
+router.post ("/ProfileUpdate", AuthMiddleware,UsersController.ProfileUpdate)
 
-router.post ("/EmailVerify" , UsersController.EmailVerify)
+router.get ("/EmailVerify/:email" , UsersController.EmailVerify)
 
 router.post ("/CodeVerify" , UsersController.CodeVerify)
 
@@ -28,15 +29,15 @@ router.post ("/ResetPassword" , UsersController.ResetPassword)
 
 //Task
 
-router.post ("/CreateTask" , TasksController.CreateTask)
+router.post ("/CreateTask" ,AuthMiddleware, TasksController.CreateTask)
 
-router.get ("/UpdateTask" , TasksController.UpdateTask)
+router.get ("/UpdateTask/:id/:status",AuthMiddleware,TasksController.UpdateTask)
 
-router.get ("/TasklistbyStatus" , TasksController.TasklistbyStatus)
+router.get ("/TasklistbyStatus/:status",AuthMiddleware, TasksController.TasklistbyStatus)
 
-router.post ("/DeleteTask" , TasksController.DeleteTask)
+router.post ("/DeleteTask/:id",AuthMiddleware, TasksController.DeleteTask)
 
-router.get ("/CountTask" , TasksController.CountTask)
+router.get ("/CountTask",AuthMiddleware,TasksController.CountTask)
 
 
 export default router;
